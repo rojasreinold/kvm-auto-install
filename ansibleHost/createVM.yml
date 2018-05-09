@@ -1,0 +1,6 @@
+---
+#Ceate vm on kvm host
+
+- hosts: all
+  roles: 
+    - createVM

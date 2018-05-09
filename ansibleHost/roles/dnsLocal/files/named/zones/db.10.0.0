@@ -1,0 +1,19 @@
+$ORIGIN 0.0.10.in-addr.arpa.
+$TTL	604800
+
+@       IN      SOA     reinoldrojas.com. admin.reinoldrojas.com (
+                              6         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+; Name servers - NS records
+	IN	NS	dns-1.reinoldrojas.com.
+
+; PTR Records
+2	IN	PTR	dhcp.reinoldrojas.com. ; 192.168.1.188
+4	IN	PTR	dns-1.reinoldrojas.com. ; 192.168.1.195
+16	IN	PTR	ftp-1.reinoldrojas.com.
+15	IN	PTR	wiki.reinoldrojas.com.
+17	IN	PTR	wordpress.reinoldrojas.com.

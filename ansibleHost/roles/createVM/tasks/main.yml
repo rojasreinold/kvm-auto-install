@@ -1,0 +1,8 @@
+---
+    - name: Create VM volume
+    - name: Create VM
+    - name: wait for vm to come back up
+      wait_for_connection:
+        delay: 5
+        timeout: 300
+      delegate_to: VM_IP

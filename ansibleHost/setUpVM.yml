@@ -1,0 +1,6 @@
+---
+#Provisions vm on kvm host
+- name: basic vm setup
+  hosts: all
+  roles: 
+    - common

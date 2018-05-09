@@ -1,0 +1,8 @@
+---
+
+  - name: restart dns bind
+    service:
+      name: named
+      state: restarted
+    listen: "restart named"
+    become: true

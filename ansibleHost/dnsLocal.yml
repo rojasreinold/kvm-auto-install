@@ -1,0 +1,5 @@
+---
+#Setup dnsLocal servers
+- hosts: dnsLocal
+  roles: 
+    - dnsLocal

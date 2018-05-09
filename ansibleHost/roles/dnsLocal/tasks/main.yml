@@ -1,0 +1,65 @@
+---
+
+#Make local dnsServer
+#
+ 
+  - name: yum update
+    yum:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - bind-utils
+      - bind
+    notify: "restart named"
+    become: true
+
+  - name: copy over named.conf
+    copy:
+      src: named.conf
+      dest: /etc/named.conf
+    become: true
+    notify: "restart named"
+    
+  - name: make /etc/named
+    file:
+      state: directory
+      mode: 0755
+      path: "/etc/named"
+    become: true
+    notify: "restart named"
+    
+  - name: copy over named.conf.local
+    copy:
+      src: named.conf.local
+      dest: /etc/named/named.conf.local
+    become: true
+    notify: "restart named"
+
+  - name: make zones directory
+    file:
+      state: directory
+      mode: 0755
+      path: "/etc/named/zones"
+    become: true
+    notify: "restart named"
+
+  - name: copy over db files
+    copy:
+      src: "zones/{{ item }}"
+      dest: "/etc/named/zones/{{ item }}"
+    with_items:
+      - db.reinoldrojas.com
+      - db.10.0.0
+    become: true
+    notify: "restart named"
+
+#  - name: copy over named directory
+#    copy:
+#      src: "{{ item }}"
+#      dest: /etc/named/zones/
+#    with_fileglob:
+#      - named/*
+#    notify: "restart named"
+#    become: true
+
+

@@ -1,0 +1,95 @@
+---
+#  - name: wait for vm to come back up
+#    wait_for_connection:
+#      delay: 5
+#      timeout: 300
+
+#  - name: disable root login
+#    notify: restart_ssh
+#   
+#
+#   seems like dont need to check if up we will check beforehand
+#   TODO add ldap integration
+#   TODO Create some nfs mount
+#
+
+  - name: yum update
+    yum:
+      name: '*'
+      state: latest
+    become: true
+
+  - name: install epel-release
+    yum:
+      name: epel-release
+      state: latest
+    become: true
+
+  - name: install basic dependencies
+    yum:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - vim
+      - wget
+      - unzip
+      - net-tools 
+      - nmap
+      - rsync
+      - strace
+      - nfs-utils
+      - telnet
+      - htop
+      - git
+      - tmux
+      - mlocate
+      - bind-utils
+      - elinks
+      - libsemanage-python
+      - xinetd
+      - tree
+      - openldap
+      - openldap-clients
+      - compat-openldap
+      - nss-pam-ldapd
+      - mod_ldap
+      - traceroute
+      - expect
+    become: true
+
+  - name: copy over vimrc file
+    copy:
+      src: vimrc
+      dest: /etc/vimrc
+      mode: 0644
+    become: true
+     
+  - name: copy over checkmk agent
+    copy:
+      src: check-mk-agent-1.4.0p25-1.noarch.rpm
+      dest: /root
+    notify: "restart xinetd"
+    become: true
+
+  - name: install checkmk agent
+    yum:
+      name: /root/check-mk-agent-1.4.0p25-1.noarch.rpm
+      state: present
+    become: true
+
+  - name: copy over xinitd file
+    copy:
+      src: check_mk
+      dest: /etc/xinet.d/
+    notify: "restart xinetd"
+    become: true
+
+  - name: enable 6556 through firewall
+    firewalld:
+      port: 6556/tcp
+      permanent: true
+      state: enabled
+      immediate: true
+    become: true
+
+  

@@ -1,0 +1,8 @@
+---
+
+  - name: restart xinetd
+    service:
+      name: xinetd
+      state: restarted
+    become: true
+    listen: "restart xinetd"
